@@ -1,0 +1,28 @@
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+dense (Dense)                (None, 4)                 12        
+_________________________________________________________________
+dense_1 (Dense)              (None, 16)                80        
+_________________________________________________________________
+dense_2 (Dense)              (None, 16)                272       
+_________________________________________________________________
+dense_3 (Dense)              (None, 1)                 17        
+=================================================================
+Total params: 381
+Trainable params: 381
+Non-trainable params: 0
+_________________________________________________________________
+--- the Test loss is [3.478346116025932e-06, 0.0011944862781092525]
+--- mean relative error: 0.27%, standard deviation of relative error: 0.33%
+the best validation loss is 1.7696753502605134e-06
+
+ Checking the train dataset through the final model:
+--- the Train loss is [1.1207312127226032e-06, 0.0006358875543810427]
+--- mean relative error: 0.15%, standard deviation of relative error: 0.19%
+--- the Validation loss is [1.7696753502605134e-06, 0.0008625167538411915]
+--- mean relative error: 0.20%, standard deviation of relative error: 0.23%
+--- the Train_all loss is [1.2180729527244694e-06, 0.000669881934300065]
+--- mean relative error: 0.15%, standard deviation of relative error: 0.20%
+The total runtime was 123.20 minutes.
