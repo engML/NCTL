@@ -1,0 +1,7 @@
+- Finite Volume Method
+- Second-order descritization
+- 480 train data (+28 for second dataset) using simulations at 25x25, 50x50, 200x200, and 400x400 uniform and structured grid system.
+- 100 test data using simulations at 400x400 uniform and structured grid system.
+
+In the csv files, the first and second columns are the Rayleigh and Prandtl numbers, respectively.
+In the csv files, the third number in a row is the data for the average Nusselt number on the vertical walls.
