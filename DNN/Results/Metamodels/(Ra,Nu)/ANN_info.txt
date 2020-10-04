@@ -1,0 +1,26 @@
+Model: "Block_I"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+Ra_number (InputLayer)       [(None, 1)]               0         
+_________________________________________________________________
+4_nodes_hidden_layer_1 (Dens (None, 4)                 8         
+_________________________________________________________________
+16_nodes_hidden_layer_2 (Den (None, 16)                80        
+_________________________________________________________________
+16_nodes_hidden_layer_3 (Den (None, 16)                272       
+_________________________________________________________________
+output_Nu_number (Dense)     (None, 1)                 17        
+=================================================================
+Total params: 377
+Trainable params: 377
+Non-trainable params: 0
+_________________________________________________________________
+--- the Test loss is [1.1982383796294016e-07, 0.00030031398637220263]
+--- mean relative error: 0.07%, standard deviation of relative error: 0.04%
+the best train loss is 1.0284820461947675e-07
+
+ Checking the train dataset through the final model:
+--- the Train loss is [1.0284820461947675e-07, 0.0002695723669603467]
+--- mean relative error: 0.06%, standard deviation of relative error: 0.04%
+The total runtime was 12.12 minutes.
