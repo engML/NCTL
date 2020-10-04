@@ -1,22 +1,6 @@
 # A transfer learning metamodel using artificial neural networks applied to natural convection flows in enclosures
 
-We employed a transfer learning technique to predict the Nusselt number for natural convection flows in enclosures. Specifically, we considered the benchmark problem of a two-dimensional square enclosure with isolated horizontal walls and vertical walls at constant temperatures. The Rayleigh and Prandtl numbers are sufficient parameters to simulate this problem numerically. We adopted two approaches to this problem: Firstly, we made use of a multi-grid dataset in order to train our artificial neural network in a cost-effective manner. By monitoring the training losses for this dataset, we detected any significant anomalies that stemmed from an insufficient grid size, which we further corrected by altering the grid size or adding more data. Secondly, we sought to endow our metamodel with the ability to account for additional input features by performing transfer learning using deep neural networks. We trained a neural network with a single input feature (Rayleigh) and extended it to incorporate the effects of a second feature (Prandtl). We also considered the case of hollow enclosures, demonstrating that our learning framework can be applied to systems with higher physical complexity, while bringing the computational and training costs down.
-
-## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
-
-### Prerequisites
-
-```
-Python modules os, sys, time, winsound, numpy, pandas, matplotlib.pyplot
-tensorflow, tensorflow_docs.modeling, tensorflow_docs.plots
-tensorflow.keras (layers, load_model, Model, utils, backend)
-sklearn.model_selection
-```
-
-## Authors
-
-* **Majid Ashouri**
-
-See also the list of [contributors](https://github.com/engdatasci/NCTL/contributors) who participated in this project.
+We aimed to extract a metamodel out of a physical model that numerically predicts the natural convection characteristics in a square enclosure, filled with a Newtonian fluid. This problem is governed by two parameters: Ra and Pr (see Appendix A of the paper for details about the mathematical analysis). We consider Ra of up to 〖10〗^8 and Pr of greater than 0.05 (1<Ra≤〖10〗^8 and 0.05≤Pr<∞); however, lower Pr were also considered provided that the ratio of Ra⁄Pr is at most less than 〖10〗^8.
+A 400×400 grid system was shown to provide precise results for the average Nu even for the most stringent cases. Appendix B of the paper includes details related to the numerical method and grid independence test. Using a single logical processor on a 2.6 GHz Intel Core i7-3720QM CPU, an average computational time of about 4,850 seconds (as high as about 13,000 seconds for low Pr) was spent for obtaining the numerical solutions using a 400×400 grid system. Nonetheless, as demonstrated in Appendix C of the paper, lower grid systems can provide accurate numerical solutions for limited ranges of Ra. For example, a 200×200 grid system (with an average simulation time of 1,300 seconds) can reliably be used for Ra of up to 〖10〗^7 with errors of less than 0.5%. Therefore, we consider a multi-grid simulation that also uses lower grid systems, wherever possible, to decrease the simulation cost in training our AI model.
+The multi-grid dataset that we used in our training includes a limited number of simulation data using the 400×400 grid system (5% of data) for cases with high Ra or low Pr. The rest of this dataset includes numerical results using 200×200 (9%), 50×50 (15%), and 25×25 grids (71%), for Ra within the range of 〖10〗^5≤Ra≤〖10〗^7, 〖10〗^3<Ra<〖10〗^5, and 1<Ra≤〖10〗^3, respectively. The low-cost simulations using 25×25 grid systems (with an average computational time of about 40 seconds) allowed us to generate more data in the low Ra region to capture the nonlinear variation of Nu for Ra≲〖10〗^3. In contrast, for higher Ra, Nu varies in a logarithmically linear manner with Ra.
+An optimized ANN as described in Appendix D of the paper was used to make a metamodel for predicting Nu. We trained our ANN using 480 data points (in which 15% of the dataset was considered for validation during training). We assumed that the source to any irregularity in the error values was due to a lack of sufficient data points or possibly an inconsistency between the results of different grid systems. Considering these two points, we revise our training dataset by adding more data at the regions with high Ra or low Pr and also replacing some of the data with higher fidelity simulation results. This process could also be done using an over-complete autoencoder. We then fed the new dataset to our previously trained ANN to achieve a better validation loss (by 48%). We also tested our ANN metamodel using a test dataset of 100 simulations using a 400×400 grid system. The test points were selected randomly and transformed to normal distributions of log⁡(Ra)=4.8±2.1 and log⁡(Pr)=0±1.7. Our metamodel predicts Nu with an error of 0.22±0.21% (the first and second terms are the mean and standard deviation of the relative errors, respectively).
