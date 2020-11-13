@@ -55,25 +55,22 @@ Y_val = data_val[:,2].reshape(-1, 1)   # Nusselt
 X_test = data_test[:,0:2].reshape(-1, 2) # (Rayleigh, Prandtl)
 Y_test = data_test[:,2].reshape(-1, 1)   # Nusselt
 
-# In our dimensionless form of the PDEs, Pr and Pr*Ra appears, thus, one might consider the product Ra*Pr as the first input (rather than Ra)
-#X_train[:,0] = X_train[:,0] + X_train[:,1]
-#X_val[:,0] = X_val[:,0] + X_val[:,1]
-#X_test[:,0] = X_test[:,0] + X_test[:,1]
-
 # Compile model
 def build_model(hp):
     model = Sequential()
     model.add(Dense(4, input_dim=2, kernel_initializer='normal', activation='tanh'))
     for i in range(hp.Int('hidden_layers_count', 1, 5, default=2)):
         model.add(Dense(hp.Choice('hidden_size', values=[4, 8, 16, 32], default=16), kernel_initializer='normal', activation='tanh'))
-#    model.add(Dropout(hp.Float('dropout', 0, 0.004, step=0.002, default=0.0)))
     model.add(Dense(1, kernel_initializer='normal'))
     model.compile(
-        optimizer=tf.keras.optimizers.Adam(    #0.0005),
+        optimizer=tf.keras.optimizers.Adam(
             hp.Float('learning_rate', min_value=5e-4, max_value=1e-3, sampling='LOG', default=5e-4)),        
         loss='mean_squared_error', metrics=['mean_absolute_error'])
-#    model.compile(optimizer='adam', loss='mean_squared_error', metrics=['mean_absolute_error'])
     return model
+
+class ClearTrainingOutput(tf.keras.callbacks.Callback):
+  def on_train_end(*args, **kwargs):
+    IPython.display.clear_output(wait = True)
 
 # tune model
 tuner_1 = kt.BayesianOptimization(
@@ -89,12 +86,12 @@ tuner_2 = kt.Hyperband(
     objective='val_loss',
     factor=2,
     max_epochs=1000,
-    hyperband_iterations=1000,
+    hyperband_iterations=10,
     directory=dir_opt,
     project_name=dir_prj)
 
 tuner = tuner_2 if hyperbandit else tuner_1
-tuner.search(X_train, Y_train, validation_data = (X_val, Y_val), callbacks=[tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=200)], verbose=0)
+tuner.search(X_train, Y_train, validation_data = (X_val, Y_val), callbacks=[ClearTrainingOutput(), tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=100)], verbose=0)
 
 sys.stdout = open(log_dir, "w")
 best_model = tuner.get_best_models(1)[0]
