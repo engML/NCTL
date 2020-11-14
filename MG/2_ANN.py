@@ -40,7 +40,6 @@ from tensorflow.keras.layers import Dense, Dropout
 from sklearn.model_selection import train_test_split
 from keras import backend as K
 import matplotlib.pyplot as plt
-import winsound
 import time
 start_time = time.time()
 tf.get_logger().setLevel('ERROR')
@@ -246,4 +245,3 @@ Y_train_all = data_train_all[:,2].reshape(-1, 1)   # Nusselt
 Y_ANN_check = evaluation(X_train_all, Y_train_all, 'Train_all')
 scatterer(Y_train_all, Y_ANN_check, ANN_dir, 'Train_all')
 print('The total runtime was {:.2f} minutes.' .format((time.time() - start_time)/60.))
-winsound.Beep(2500, 1000)
