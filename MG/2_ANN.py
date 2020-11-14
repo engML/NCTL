@@ -159,7 +159,7 @@ ANN_dir = os.path.join(result_folder,ANN_folder)
 if not os.path.exists(ANN_dir): os.makedirs(ANN_dir)
 model_name = 'ANN_model.h5'
 best_model_dir = os.path.join(ANN_dir,model_name)
-ANN_1_folder = 'Metamodel 1 2nodes'
+ANN_1_folder = 'Metamodel 1'
 first_model_dir = os.path.join(result_folder,ANN_1_folder,model_name)
 log_name = 'ANN_info.txt'
 last_log_dir = os.path.join(ANN_dir,log_name)
