@@ -68,10 +68,6 @@ def build_model(hp):
         loss='mean_squared_error', metrics=['mean_absolute_error'])
     return model
 
-class ClearTrainingOutput(tf.keras.callbacks.Callback):
-  def on_train_end(*args, **kwargs):
-    IPython.display.clear_output(wait = True)
-
 # tune model
 tuner_1 = kt.BayesianOptimization(
     build_model,
@@ -91,7 +87,7 @@ tuner_2 = kt.Hyperband(
     project_name=dir_prj)
 
 tuner = tuner_2 if hyperbandit else tuner_1
-tuner.search(X_train, Y_train, validation_data = (X_val, Y_val), callbacks=[ClearTrainingOutput(), tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=100)], verbose=0)
+tuner.search(X_train, Y_train, validation_data = (X_val, Y_val), callbacks=[tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=100)], verbose=0)
 
 sys.stdout = open(log_dir, "w")
 best_model = tuner.get_best_models(1)[0]
