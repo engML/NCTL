@@ -19,6 +19,6 @@ sklearn.model_selection
 
 ## Authors
 
-* **Majid Ashouri** 
+* **Majid Ashouri**  **Alireza Hashemi**
 
 See also the list of [contributors](https://github.com/engdatasci/NCTL/contributors) who participated in this project.
