@@ -109,7 +109,7 @@ Y_train[Y_train<eps]=eps
 Y_val[Y_val<eps]=eps
 Y_test[Y_test<eps]=eps
 
-Y_train = np.log10(Y_train)
+Y_train = np.log10(Y_train) # revised model is built using np.log10(Nu + 1) to avoid negative values for logarithm.
 Y_val = np.log10(Y_val)
 Y_test = np.log10(Y_test)
 
